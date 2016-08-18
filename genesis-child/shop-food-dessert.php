@@ -1,6 +1,6 @@
 <?php
 /**
-* Template Name: Shop Our Clients (GOODS)
+* Template Name: Shop Our Clients (SUBCATEGORIES)
 * Description: Used as a page template to show page contents, followed by a loop 
 * through the "Genesis Office Hours" category
 */
@@ -20,31 +20,64 @@ function category_nav() {
     wp_nav_menu( array( 'theme_location' => 'category-menu' ) );
 }
 
-add_action ( 'gensis_before_content','search_shop');
+add_action ( 'gensis_before_content','shop_search');
     
 function search_shop() {
-    genesis_widget_area( 'shop_search' );
-            //'before' => '<div id="cta"><div class="wrap">',
-			//'after' => '</div></div>',
+    echo '<div id="cta"><div class="wrap">';
+    genesis_widget_area( 'shop_search' );            
+    echo '</div></div>';
 		
     }
 add_action( 'genesis_before_loop','services_title');
 
 function services_title() {
-    echo '<h1>Goods</h1>';
+    echo '<h1>' .  get_the_title() . '</h1>';
 }
 
 /*add_action( 'genesis_loop', 'profile_thumbs');
 
 function profile_thumbs() {
-    echo do_shortcode("[pt_view id=d0447e66af]");
+    echo do_shortcode("[pt_view id=302029b633]");
 }*/
 
 add_action( 'genesis_loop', 'profile_loop');
 
 function profile_loop() {
+    //$page-cat = get_the_category();
+    if (is_page( 1719 ) ) {
+        $cat_name = "dessert-baked-goods";
+    } elseif (is_page( 'full-service-meals' )) {
+        $cat_name = "full-service-meals";
+    } elseif (is_page( 'juice-health-food' )) {
+        $cat_name = "juice-health-food";
+    } elseif (is_page( 'other-specialty-items' )) {
+        $cat_name = "other-specialty-items";
+    } elseif (is_page( 'chocolate-confections' )) {
+        $cat_name = "chocolate-confections";
+    } elseif (is_page( 'clothing-jewelry-accessories')) {
+        $cat_name = "clothing-jewelry-accessories";
+    } elseif (is_page( 'electronics-technology' )) {
+        $cat_name = "electronics-technology";
+    } elseif (is_page( 'arts-media' )) {
+        $cat_name = "arts-media";
+    } elseif (is_page( 'business-legal' )) {
+        $cat_name = "business-legal";
+    } elseif (is_page( 'children-education' )) {
+        $cat_name = "children-education";
+    } elseif (is_page( 'health-personal-care' )) {
+        $cat_name = "health-personal-care";
+    } elseif (is_page( 'home-garden' )) {
+        $cat_name = "home-garden";
+    } elseif (is_page( 'internet-social-media' )) {
+        $cat_name = "internet-social-media";
+    } elseif (is_page( 'other' )) {
+        $cat_name = "other";
+    } elseif (is_page( 'pets' )) {
+        $cat_name = "pets";
+    } 
+
     $args = array(
-        'category_name' => 'goods',
+        'category_name' => $cat_name,
 		'orderby'       => 'title',
 		'order'         => 'ASC',
 		'posts_per_page'=> '-1', // overrides posts per page in theme settings

@@ -12,17 +12,19 @@ function profile_slides() {
     echo do_shortcode("[metaslider id=1263]");
 }
 
-    
 add_action( 'genesis_before_content','category_nav');
 
 function category_nav() {
     wp_nav_menu( array( 'theme_location' => 'category-menu' ) );
+    get_search_form();
 }
 
 add_action ( 'gensis_before_content','search_shop');
     
 function search_shop() {
-    genesis_widget_area( 'shop_search' );
+//    wp_nav_menu( array('theme_location' => 'shop_search' ) );
+
+   genesis_widget_area( 'shop_search' )->theme_location == 'category-menu';
             //'before' => '<div id="cta"><div class="wrap">',
 			//'after' => '</div></div>',
 		
@@ -32,12 +34,6 @@ add_action( 'genesis_before_loop','services_title');
 function services_title() {
     echo '<h1>Shop Our Clients</h1>';
 }
-
-/*add_action( 'genesis_loop', 'profile_thumbs');
-
-function profile_thumbs() {
-    echo do_shortcode("[pt_view id=c806454838]");
-}*/
 
 add_action( 'genesis_loop', 'profile_loop');
 
@@ -51,43 +47,27 @@ function profile_loop() {
     
     $loop = new WP_Query( $args );
 	if( $loop->have_posts() ) {
-		// loop through posts
+        // loop through posts
 		while( $loop->have_posts() ): $loop->the_post();
-        
-        //$categoryArray = get_the_category();
-        
-        //$categoryValues = get_the_category();
-        //echo $categoryValues[0];
-        
-        //$category_name = get_the_category();
-        
-        echo '<a href="' . get_permalink() . '">';
-        
-        echo '<div class="profile-thumb">';
-        
-            echo  '<a href="' . get_permalink() . '" target="_blank">' . the_post_thumbnail() . '</a>';
-        
             foreach(get_the_category() as $category) { 
-                echo '<a href="' . get_permalink() . '">';
-                //echo '<div class="' . str_replace(" ","-",$category->name) . ' profile-title">';
-                echo '<div class="' . $category->name . ' ' . ' profile-title">';
-                break;}
-        
-            foreach(get_the_category() as $category) {
-                echo $category->name . ' ';}
-        
-            echo  '<h4>' . get_the_title() . '</h4>';
-            
-		echo '</div>';
-        echo '</div>';
-        echo '</a>';
-        echo '</a>';
-		endwhile;
-	}
+                if($category->name == 'goods' || $category->name == 'food and restaurants' || $category->name == 'services' ){
+                    echo '<a href="' . get_permalink() . '">';        
+                    echo '<div class="profile-thumb">';
+                    echo  '<a href="' . get_permalink() . '" target="_blank">' . the_post_thumbnail() . '</a>';
+                    echo '<a href="' . get_permalink() . '">';
+                    echo '<div class="' . str_replace(" ","-",$category->name) . ' ' . ' profile-title">';
+                    echo $category->name . ' ';
+                    echo  '<h4>' . get_the_title() . '</h4>';
+
+                    echo '</div></div></a></a>';
+                }
+            }
+        endwhile;
+	} else {
+        echo '<p>It looks like there is nothing here!</p>';
+    }
 	wp_reset_postdata();
 }
-
-
 
 genesis();
 
